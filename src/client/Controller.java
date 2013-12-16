@@ -5,7 +5,8 @@ package client;
  * Author website : paul-steele.com
  * Project page : https://github.com/paulsteele/chat-package
  * 
- * This file is protected under a creative commons license. For further information see paul-steele.com/license.php
+ * This file is protected under a Creative Commons Attribution-NonCommercial 3.0 Unported License
+ * For further information see paul-steele.com/Pages/license.php
  * 
  * Controller for the client for the chat package.
  *

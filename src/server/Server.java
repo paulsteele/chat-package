@@ -25,17 +25,36 @@ public class Server {
 		this.port  = port;
 	}
 	
-	public static void main(String args) throws IOException{
+	public static void main(String[] args) throws IOException{
 		ServerSocket connection = new ServerSocket(8888);
-		
+		connection.accept();
 		
 	}
 }
-
+/**
+ * Internal Class for the server to keep track of clients.
+ * Contains fields for socket connection and an alias.
+ */
 class Client {
-	private Socket thisSocket;
+	private Socket link; //The socket connection to the client
+	private String alias; //the username of the client connected
 	
 	public Client(Socket s) {
-		thisSocket = s;
+		link = s;
 	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+	
+	public String getAlias() {
+		return alias;
+	}
+	
+	public Socket getSocket() {
+		return link;
+	}
+	
+	
+	
 }

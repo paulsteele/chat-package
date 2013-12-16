@@ -17,7 +17,7 @@ import java.util.LinkedList;
  * Server for the chat package. Run via command line.
  *
  */
-public class Server implements Runnable{
+public class Server {
 	private LinkedList<Client> clients;
 	private int port;
 	
@@ -27,21 +27,16 @@ public class Server implements Runnable{
 	
 	public static void main(String[] args) {
 		Server serv = new Server(8888);
-		serv.run();
-		
+		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
+		connectListen.start();
 	}
-
-	@Override
-	public void run() {
-		try {
-			ServerSocket connection = new ServerSocket(port);
-			while (true) {
-				clients.add(new Client (connection.accept()));
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+	
+	public LinkedList<Client> getClients() {
+		return clients;
+	}
+	
+	public int getPort() {
+		return port;
 	}
 }
 /**
@@ -67,7 +62,36 @@ class Client {
 	public Socket getSocket() {
 		return link;
 	}
+}
+
+/**
+ * Internal listener class for server to process new connections
+ *
+ */
+class ConnectionListener extends Thread {
+	private Server parent;
+	private int port;
 	
+	public ConnectionListener (Server parent, int port) {
+		this.parent = parent;
+		this.port = port;
+	}
 	
+	public void run() {
+		
+		try {
+			ServerSocket ss = new ServerSocket(port);
+			while (true) {
+				System.out.print("ConnecitonListener waiting...");
+				Socket s = ss.accept();
+				synchronized (parent) {
+				parent.getClients().add(new Client (s));
+				}
+			}
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 	
 }

@@ -1,4 +1,10 @@
 package client;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  * 
  * @author Paul Steele
@@ -12,5 +18,19 @@ package client;
  *
  */
 public class Controller {
-
+	
+	public static void main(String[] args) {
+		try {
+			Socket s = new Socket("localhost",8888);
+			PrintWriter out = new PrintWriter(s.getOutputStream());
+			out.print("Bilbo");
+			out.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

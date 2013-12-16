@@ -27,18 +27,20 @@ public class Server {
 		clients = new LinkedList<Client>();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		Server serv = new Server(8888);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
-		while (serv.getClients().size() == 0){
-			
+		while (serv.getClients().size() == 0) {
+			Thread.sleep(100);
 		}
 		System.out.println(serv.getClients().pop().getAlias());
 	}
 	
 	public LinkedList<Client> getClients() {
-		return clients;
+		synchronized (this) {
+			return clients;
+		}
 	}
 	
 	public int getPort() {
@@ -92,8 +94,13 @@ class ConnectionListener extends Thread {
 				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
 				Scanner in = new Scanner(s.getInputStream());
-				synchronized (parent) {
-				parent.getClients().add(new Client (s, in.next()));
+				String message = "";
+				while (!in.hasNext()){
+					System.out.println("IMSTuCK");
+				}
+				message = in.nextLine();
+				synchronized (parent) {	
+					parent.getClients().add(new Client (s, message));
 				}
 			}
 		}

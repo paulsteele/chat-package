@@ -24,7 +24,8 @@ public class Controller {
 			Socket s = new Socket("localhost",8888);
 			PrintWriter out = new PrintWriter(s.getOutputStream());
 			out.print("Bilbo");
-			out.close();
+			out.flush();
+			s.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

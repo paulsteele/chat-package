@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 /**
  * 
@@ -23,12 +24,17 @@ public class Server {
 	
 	public Server(int port) {
 		this.port  = port;
+		clients = new LinkedList<Client>();
 	}
 	
 	public static void main(String[] args) {
 		Server serv = new Server(8888);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
+		while (serv.getClients().size() == 0){
+			
+		}
+		System.out.println(serv.getClients().pop().getAlias());
 	}
 	
 	public LinkedList<Client> getClients() {
@@ -85,8 +91,9 @@ class ConnectionListener extends Thread {
 			while (true) {
 				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
+				Scanner in = new Scanner(s.getInputStream());
 				synchronized (parent) {
-				parent.getClients().add(new Client (s));
+				parent.getClients().add(new Client (s, in.next()));
 				}
 			}
 		}

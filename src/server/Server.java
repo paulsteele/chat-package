@@ -47,8 +47,9 @@ class Client {
 	private Socket link; //The socket connection to the client
 	private String alias; //the username of the client connected
 	
-	public Client(Socket s) {
+	public Client(Socket s, String alias) {
 		link = s;
+		this.alias = alias;
 	}
 
 	public void setAlias(String alias) {
@@ -82,7 +83,7 @@ class ConnectionListener extends Thread {
 		try {
 			ServerSocket ss = new ServerSocket(port);
 			while (true) {
-				System.out.print("ConnecitonListener waiting...");
+				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
 				synchronized (parent) {
 				parent.getClients().add(new Client (s));

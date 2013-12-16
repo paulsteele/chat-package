@@ -17,7 +17,7 @@ import java.util.LinkedList;
  * Server for the chat package. Run via command line.
  *
  */
-public class Server {
+public class Server implements Runnable{
 	private LinkedList<Client> clients;
 	private int port;
 	
@@ -25,10 +25,23 @@ public class Server {
 		this.port  = port;
 	}
 	
-	public static void main(String[] args) throws IOException{
-		ServerSocket connection = new ServerSocket(8888);
-		connection.accept();
+	public static void main(String[] args) {
+		Server serv = new Server(8888);
+		serv.run();
 		
+	}
+
+	@Override
+	public void run() {
+		try {
+			ServerSocket connection = new ServerSocket(port);
+			while (true) {
+				clients.add(new Client (connection.accept()));
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 /**

@@ -25,7 +25,9 @@ public class Controller {
 			PrintWriter out = new PrintWriter(s.getOutputStream());
 			out.print("Bilbo");
 			out.flush();
-			s.close();
+			out.print("hello");
+			out.flush();
+			while(true);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

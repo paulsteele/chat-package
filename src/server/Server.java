@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -31,10 +32,8 @@ public class Server {
 		Server serv = new Server(8888);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
-		while (serv.getClients().size() == 0) {
-			Thread.sleep(100);
-		}
-		System.out.println(serv.getClients().pop().getAlias());
+		MessageListener messageListen = new MessageListener(serv,serv.getPort());
+		messageListen.start();
 	}
 	
 	public LinkedList<Client> getClients() {
@@ -45,6 +44,10 @@ public class Server {
 	
 	public int getPort() {
 		return port;
+	}
+	
+	public void handleMessage(Client client, String message) {
+		System.out.println(message);
 	}
 }
 /**
@@ -73,6 +76,42 @@ class Client {
 	}
 }
 
+
+/**
+ * Internal listener class for old connections
+ */
+class MessageListener extends ConnectionListener {
+	
+	public MessageListener(Server parent, int port) {
+		super(parent, port);
+	}
+	
+	public void run() {
+		try {
+			while (true) {
+				Thread.sleep(1000);
+				for (Client c : getParent().getClients()) {
+					Scanner in = new Scanner(c.getSocket().getInputStream());
+					while(in.hasNext()) {
+						getParent().handleMessage(c, in.nextLine());
+					}
+				}
+			}
+		}
+		catch (SocketException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+	}
+}
+
 /**
  * Internal listener class for server to process new connections
  *
@@ -94,13 +133,13 @@ class ConnectionListener extends Thread {
 				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
 				Scanner in = new Scanner(s.getInputStream());
-				String message = "";
+				String name = "";
 				while (!in.hasNext()){
 					System.out.println("IMSTuCK");
 				}
-				message = in.nextLine();
+				name = in.nextLine();
 				synchronized (parent) {	
-					parent.getClients().add(new Client (s, message));
+					parent.getClients().add(new Client (s, name));
 				}
 			}
 		}
@@ -109,4 +148,11 @@ class ConnectionListener extends Thread {
 		}
 	}
 	
+	public Server getParent() {
+		return parent;
+	}
+	
+	public int getPort() {
+		return port;
+	}
 }

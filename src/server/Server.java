@@ -32,8 +32,6 @@ public class Server {
 		Server serv = new Server(8888);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
-		MessageListener messageListen = new MessageListener(serv,serv.getPort());
-		messageListen.start();
 	}
 	
 	public LinkedList<Client> getClients() {
@@ -80,35 +78,28 @@ class Client {
 /**
  * Internal listener class for old connections
  */
-class MessageListener extends ConnectionListener {
-	
-	public MessageListener(Server parent, int port) {
-		super(parent, port);
+class MessageListener extends Thread {
+	private Server parent;
+	private Client client;
+	private Socket socket;
+	private Scanner in;
+	public MessageListener(Server parent, Client client) {
+		this.parent = parent;
+		this.client = client;
+		this.socket = client.getSocket();
+		try {
+			in = new Scanner(this.socket.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
-		try {
-			while (true) {
-				Thread.sleep(1000);
-				for (Client c : getParent().getClients()) {
-					Scanner in = new Scanner(c.getSocket().getInputStream());
-					while(in.hasNext()) {
-						getParent().handleMessage(c, in.nextLine());
-					}
-				}
+		while (true) {
+			if (in.hasNext()) {
+				parent.handleMessage(client, in.nextLine());
 			}
 		}
-		catch (SocketException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 	}
 }
 
@@ -138,9 +129,12 @@ class ConnectionListener extends Thread {
 					System.out.println("IMSTuCK");
 				}
 				name = in.nextLine();
-				synchronized (parent) {	
-					parent.getClients().add(new Client (s, name));
+				Client c = new Client (s, name);
+				synchronized (parent) {
+					parent.getClients().add(c);
 				}
+				MessageListener m = new MessageListener(parent, c);
+				m.start();
 			}
 		}
 		catch (IOException e){

@@ -27,7 +27,6 @@ public class Controller {
 			out.flush();
 			out.print("hello");
 			out.flush();
-			while(true);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -87,19 +87,19 @@ class MessageListener extends Thread {
 		this.parent = parent;
 		this.client = client;
 		this.socket = client.getSocket();
-		try {
-			in = new Scanner(this.socket.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public void run() {
-		while (true) {
-			if (in.hasNext()) {
-				parent.handleMessage(client, in.nextLine());
-			}
+		try {
+			Scanner in = new Scanner(socket.getInputStream());
+			System.out.print(in.nextLine());
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 	}
 }
 
@@ -119,27 +119,24 @@ class ConnectionListener extends Thread {
 	public void run() {
 		
 		try {
-			ServerSocket ss = new ServerSocket(port);
 			while (true) {
+				ServerSocket ss = new ServerSocket(port);
 				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
-				Scanner in = new Scanner(s.getInputStream());
 				String name = "";
-				while (!in.hasNext()){
-					System.out.println("IMSTuCK");
-				}
-				name = in.nextLine();
 				Client c = new Client (s, name);
 				synchronized (parent) {
 					parent.getClients().add(c);
 				}
 				MessageListener m = new MessageListener(parent, c);
 				m.start();
+				ss.close();
 			}
+			
 		}
 		catch (IOException e){
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public Server getParent() {

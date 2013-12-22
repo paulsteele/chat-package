@@ -19,14 +19,16 @@ import java.net.UnknownHostException;
  */
 public class Controller {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		try {
 			Socket s = new Socket("localhost",8888);
 			PrintWriter out = new PrintWriter(s.getOutputStream());
-			out.print("Bilbo");
+			out.println("Bilbo");
 			out.flush();
-			out.print("hello");
+			Thread.sleep(1000);
+			out.println("hello");
 			out.flush();
+			s.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

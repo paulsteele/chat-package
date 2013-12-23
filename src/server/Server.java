@@ -3,7 +3,6 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -81,12 +80,10 @@ class Client {
 class MessageListener extends Thread {
 	private Server parent;
 	private Client client;
-	private Socket socket;
 	private Scanner in;
 	public MessageListener(Server parent, Client client, Scanner in) {
 		this.parent = parent;
 		this.client = client;
-		this.socket = client.getSocket();
 		this.in = in;
 		
 	}

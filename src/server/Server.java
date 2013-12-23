@@ -45,7 +45,7 @@ public class Server {
 	}
 	
 	public void handleMessage(Client client, String message) {
-		System.out.println(message);
+		System.out.println(client.getAlias() + ": " + message);
 	}
 }
 /**

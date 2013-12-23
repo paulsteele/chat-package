@@ -83,23 +83,16 @@ class MessageListener extends Thread {
 	private Client client;
 	private Socket socket;
 	private Scanner in;
-	public MessageListener(Server parent, Client client) {
+	public MessageListener(Server parent, Client client, Scanner in) {
 		this.parent = parent;
 		this.client = client;
 		this.socket = client.getSocket();
+		this.in = in;
 		
 	}
 	
 	public void run() {
-		try {
-			Scanner in = new Scanner(socket.getInputStream());
-			System.out.print(in.nextLine());
-			in.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			parent.handleMessage(client, in.nextLine());
 	}
 }
 
@@ -121,20 +114,24 @@ class ConnectionListener extends Thread {
 		try {
 			while (true) {
 				ServerSocket ss = new ServerSocket(port);
-				System.out.print("ConnectionListener waiting...");
 				Socket s = ss.accept();
-				String name = "";
+				Scanner in = new Scanner(s.getInputStream());
+				Thread.sleep(100);
+				String name = in.nextLine();
 				Client c = new Client (s, name);
 				synchronized (parent) {
 					parent.getClients().add(c);
 				}
-				MessageListener m = new MessageListener(parent, c);
+				MessageListener m = new MessageListener(parent, c, in);
 				m.start();
 				ss.close();
 			}
 			
 		}
 		catch (IOException e){
+			e.printStackTrace();
+		} 
+		catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
 	}

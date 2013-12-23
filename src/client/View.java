@@ -1,4 +1,12 @@
 package client;
+
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JWindow;
+
 /**
  * 
  * @author Paul Steele
@@ -12,5 +20,21 @@ package client;
  *
  */
 public class View {
-
+	
+	Model model;
+	JWindow window; 
+	JMenuBar menu;
+	JMenu File;
+	JMenu About;
+	JTextArea textbar;
+	JTextArea chatlog;
+	JButton send;
+	JPanel MainPane;
+	
+	
+	public View(Model model) {
+		this.model = model;
+		
+		
+	}
 }

@@ -92,7 +92,16 @@ class MessageListener extends Thread {
 	}
 	
 	public void run() {
-			parent.handleMessage(client, in.nextLine());
+		while(true) {
+			try {
+				Thread.sleep(1000);
+				if (in.hasNext())
+					parent.handleMessage(client, in.nextLine());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+			
 	}
 }
 

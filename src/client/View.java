@@ -3,6 +3,7 @@ package client;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JWindow;
@@ -21,15 +22,25 @@ import javax.swing.JWindow;
  */
 public class View {
 	
+	//Variabes needed as refrences to outside classes
 	private Model model;
+	//Components for Main Window
 	private JWindow window; 
-	private JMenuBar menu;
-	private JMenu File;
-	private JMenu About;
-	private JTextArea textentry;
-	private JTextArea chatlog;
-	private JButton send;
 	private JPanel MainPane;
+	//Components for Menu
+	private JMenuBar menu;
+	//File Menu
+	private JMenu File;
+	private JMenuItem exit;
+	//About Menu
+	private JMenu About;
+	//Components for Text entry
+	private JTextArea textentry;
+	private JButton send;
+	//Components for Text viewing
+	private JTextArea chatlog;
+	
+
 	
 	
 	public View(Model model) {

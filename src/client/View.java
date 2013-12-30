@@ -74,6 +74,7 @@ public class View {
 		//set up chatlog
 		chatlog = new JTextArea();
 		chatlog.setLineWrap(true);
+		chatlog.setEditable(false);
 		chatlogPane = new JScrollPane();
 		chatlogPane.setViewportView(chatlog);
 		//set up textEntry
@@ -95,10 +96,12 @@ public class View {
 		paneConstraints.gridy = 1;
 		paneConstraints.gridwidth = 1;
 		paneConstraints.weighty = .1;
-		paneConstraints.weightx = .8;
+		paneConstraints.weightx = 1;
 		pane.add(textEntryPane, paneConstraints);
-		paneConstraints.weightx = .2;
+		paneConstraints.weightx = 0;
 		paneConstraints.gridx = 2;
+		paneConstraints.fill = GridBagConstraints.VERTICAL;
+		paneConstraints.anchor = GridBagConstraints.EAST;
 		pane.add(send, paneConstraints);
 		
 		//add menu bar to window
@@ -110,7 +113,4 @@ public class View {
 		window.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		View guy = new View(null);
-	}
 }

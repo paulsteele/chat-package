@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
@@ -40,9 +41,11 @@ public class View {
 	//About Menu
 	private JMenu about;
 	//Components for Text entry
+	private JScrollPane textEntryPane;
 	private JTextArea textEntry;
 	private JButton send;
 	//Components for Text viewing
+	private JScrollPane chatlogPane;
 	private JTextArea chatlog;
 	
 
@@ -70,9 +73,13 @@ public class View {
 		paneConstraints.gridwidth = 2;
 		//set up chatlog
 		chatlog = new JTextArea();
-		chatlog.setWrapStyleWord(true);
+		chatlog.setLineWrap(true);
+		chatlogPane = new JScrollPane();
+		chatlogPane.setViewportView(chatlog);
 		//set up textEntry
 		textEntry = new JTextArea();
+		textEntryPane = new JScrollPane();
+		textEntryPane.setViewportView(textEntry);
 		//set up send button
 		send = new JButton("Send");
 		
@@ -80,17 +87,22 @@ public class View {
 		paneConstraints.gridx = 0;
 		paneConstraints.gridy = 0;
 		paneConstraints.gridheight = 1;
-		paneConstraints.gridwidth = 2;
+		paneConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		paneConstraints.weightx = .5;
-		paneConstraints.weighty = .5;
+		paneConstraints.weighty = .9;
 		paneConstraints.fill = GridBagConstraints.BOTH;
-		pane.add(chatlog, paneConstraints);
+		pane.add(chatlogPane, paneConstraints);
 		paneConstraints.gridy = 1;
 		paneConstraints.gridwidth = 1;
-		pane.add(textEntry, paneConstraints);
+		paneConstraints.weighty = .1;
+		paneConstraints.weightx = .8;
+		pane.add(textEntryPane, paneConstraints);
+		paneConstraints.weightx = .2;
 		paneConstraints.gridx = 2;
 		pane.add(send, paneConstraints);
 		
+		//add menu bar to window
+		window.setJMenuBar(menu);
 		//add pane to window and display window
 		window.add(pane);
 		window.setMinimumSize(new Dimension(500, 500));

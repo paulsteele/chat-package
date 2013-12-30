@@ -1,12 +1,16 @@
 package client;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JWindow;
 
 /**
  * 
@@ -25,17 +29,18 @@ public class View {
 	//Variabes needed as refrences to outside classes
 	private Model model;
 	//Components for Main Window
-	private JWindow window; 
-	private JPanel MainPane;
+	private JFrame window; 
+	private JPanel pane;
+	private GridBagConstraints paneConstraints;
 	//Components for Menu
 	private JMenuBar menu;
 	//File Menu
-	private JMenu File;
+	private JMenu file;
 	private JMenuItem exit;
 	//About Menu
-	private JMenu About;
+	private JMenu about;
 	//Components for Text entry
-	private JTextArea textentry;
+	private JTextArea textEntry;
 	private JButton send;
 	//Components for Text viewing
 	private JTextArea chatlog;
@@ -45,7 +50,55 @@ public class View {
 	
 	public View(Model model) {
 		this.model = model;
+		//set up Window
+		window = new JFrame("chat-package client");
+		//set up Menubar
+		menu = new JMenuBar();
+		//File
+		file = new JMenu("File");
+		exit = new JMenuItem("Exit");
+		file.add(exit);
+		//About
+		about = new JMenu("About");
+		//Add menus to bar
+		menu.add(file);
+		menu.add(about);
+		//set up GridBagLayout
+		pane = new JPanel(new GridBagLayout());
+		paneConstraints = new GridBagConstraints();
+		paneConstraints.gridheight = 2;
+		paneConstraints.gridwidth = 2;
+		//set up chatlog
+		chatlog = new JTextArea();
+		chatlog.setWrapStyleWord(true);
+		//set up textEntry
+		textEntry = new JTextArea();
+		//set up send button
+		send = new JButton("Send");
 		
+		//add components to pane
+		paneConstraints.gridx = 0;
+		paneConstraints.gridy = 0;
+		paneConstraints.gridheight = 1;
+		paneConstraints.gridwidth = 2;
+		paneConstraints.weightx = .5;
+		paneConstraints.weighty = .5;
+		paneConstraints.fill = GridBagConstraints.BOTH;
+		pane.add(chatlog, paneConstraints);
+		paneConstraints.gridy = 1;
+		paneConstraints.gridwidth = 1;
+		pane.add(textEntry, paneConstraints);
+		paneConstraints.gridx = 2;
+		pane.add(send, paneConstraints);
 		
+		//add pane to window and display window
+		window.add(pane);
+		window.setMinimumSize(new Dimension(500, 500));
+		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		window.setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		View guy = new View(null);
 	}
 }

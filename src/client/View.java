@@ -21,15 +21,15 @@ import javax.swing.JWindow;
  */
 public class View {
 	
-	Model model;
-	JWindow window; 
-	JMenuBar menu;
-	JMenu File;
-	JMenu About;
-	JTextArea textbar;
-	JTextArea chatlog;
-	JButton send;
-	JPanel MainPane;
+	private Model model;
+	private JWindow window; 
+	private JMenuBar menu;
+	private JMenu File;
+	private JMenu About;
+	private JTextArea textentry;
+	private JTextArea chatlog;
+	private JButton send;
+	private JPanel MainPane;
 	
 	
 	public View(Model model) {

@@ -62,7 +62,9 @@ public class Server {
 	}
 	
 	public void handleMessage(Client client, String message) {
-		System.out.println(client.getAlias() + ": " + message);
+		for (Client c : getClients()) {
+		
+		}
 	}
 }
 /**
@@ -99,6 +101,7 @@ class MessageListener extends Thread {
 	private Server parent;
 	private Client client;
 	private Scanner in;
+	
 	public MessageListener(Server parent, Client client, Scanner in) {
 		this.parent = parent;
 		this.client = client;

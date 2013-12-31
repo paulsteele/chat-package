@@ -6,7 +6,7 @@ The goal of this project is to practice File I/O as well as network communicatio
 
 ###Running the program
 Starting the Server
-'''
+```
 Server <port #>
-'''
+```
 By default the port number is 8050

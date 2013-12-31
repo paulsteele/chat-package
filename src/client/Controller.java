@@ -21,7 +21,7 @@ public class Controller {
 	
 	public static void main(String[] args) throws InterruptedException {
 		try {
-			Socket s = new Socket("localhost",8888);
+			Socket s = new Socket("localhost",8050);
 			PrintWriter out = new PrintWriter(s.getOutputStream());
 			out.println("Bilbo");
 			out.flush();

@@ -15,7 +15,8 @@ import java.util.Scanner;
  * This file is protected under a Creative Commons Attribution-NonCommercial 3.0 Unported License
  * For further information see paul-steele.com/Pages/license.php
  * 
- * Server for the chat package. Run via command line.
+ * Server for the chat package. Run via command line. Accepts one argument, that being the port to listen on.
+ * Example: 'Sever 8050' will start the server application listening on port 8050(which happens to be the default if a port number isn't entered)
  *
  */
 public class Server {
@@ -28,7 +29,24 @@ public class Server {
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
-		Server serv = new Server(8888);
+		System.out.println("chat-package Server starting up...");
+		
+		//get port from command line otherwise defaults to 8050
+		int port = 8050;
+		if (args.length != 0) {
+			try {
+				port = Integer.parseInt(args[0]);
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Invalid port number entered, defaulting to port 8050");
+			}
+		}
+		else {
+			System.out.println("No port specified, defaulting to port 8050");
+		}
+		
+		//These three lines NEED to happen for processes to occur properly
+		Server serv = new Server(port);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
 	}
@@ -116,7 +134,7 @@ class ConnectionListener extends Thread {
 	}
 	
 	public void run() {
-		
+		System.out.println("Waiting for connections on port : " + parent.getPort());
 		try {
 			while (true) {
 				ServerSocket ss = new ServerSocket(port);
@@ -128,6 +146,7 @@ class ConnectionListener extends Thread {
 				synchronized (parent) {
 					parent.getClients().add(c);
 				}
+				System.out.println(c.getAlias() + " has entered the chatroom");
 				MessageListener m = new MessageListener(parent, c, in);
 				m.start();
 				ss.close();

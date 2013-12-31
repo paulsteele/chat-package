@@ -84,7 +84,7 @@ public class View {
 		//set up send button
 		send = new JButton("Send");
 		
-		//add components to pane
+		//add components to pane setting up GridBagConsraints as needed
 		paneConstraints.gridx = 0;
 		paneConstraints.gridy = 0;
 		paneConstraints.gridheight = 1;
@@ -112,5 +112,7 @@ public class View {
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setVisible(true);
 	}
+	
+	
 	
 }

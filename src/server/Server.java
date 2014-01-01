@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -63,7 +64,8 @@ public class Server {
 	
 	public void handleMessage(Client client, String message) {
 		for (Client c : getClients()) {
-		
+			c.getPrintWriter().write(c.getAlias() + ": " + message);
+			c.getPrintWriter().flush();
 		}
 	}
 }
@@ -73,11 +75,13 @@ public class Server {
  */
 class Client {
 	private Socket link; //The socket connection to the client
+	private PrintWriter output; //The PrintWriter for the socket
 	private String alias; //the username of the client connected
 	
-	public Client(Socket s, String alias) {
+	public Client(Socket s, String alias) throws IOException {
 		link = s;
 		this.alias = alias;
+		this.output = new PrintWriter(s.getOutputStream());
 	}
 
 	public void setAlias(String alias) {
@@ -90,6 +94,10 @@ class Client {
 	
 	public Socket getSocket() {
 		return link;
+	}
+	
+	public PrintWriter getPrintWriter() {
+		return output;
 	}
 }
 

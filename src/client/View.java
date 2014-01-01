@@ -3,6 +3,8 @@ package client;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +31,7 @@ public class View {
 	
 	//Variabes needed as refrences to outside classes
 	private Model model;
+	private EventListener eventListener;
 	//Components for Main Window
 	private JFrame window; 
 	private JPanel pane;
@@ -54,6 +57,7 @@ public class View {
 	
 	public View(Model model) {
 		this.model = model;
+		eventListener = new EventListener(this);
 		//set up Window
 		window = new JFrame("chat-package client");
 		//set up Menubar
@@ -61,7 +65,12 @@ public class View {
 		//File
 		file = new JMenu("File");
 		connect = new JMenuItem("Connect");
+		connect.setActionCommand("connect");
+		connect.addActionListener(eventListener);
+		file.add(connect);
 		exit = new JMenuItem("Exit");
+		exit.setActionCommand("exit");
+		exit.addActionListener(eventListener);
 		file.add(exit);
 		//About
 		about = new JMenu("About");
@@ -130,4 +139,28 @@ public class View {
 	public void clearChatlog() {
 		chatlog.setText("");
 	}
+}
+/**
+ * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()
+ *
+ */
+class EventListener implements ActionListener {
+	private View view;
+	
+	EventListener(View view){
+		this.view = view;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		switch (ae.getActionCommand()){
+			case "connect" :
+				break;
+			case "exit" : 
+				break;
+			default: 
+		}
+		
+	}
+	
 }

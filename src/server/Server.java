@@ -183,7 +183,7 @@ class ConnectionListener extends Thread {
 				synchronized (parent) {
 					parent.getClients().add(c);
 				}
-				System.out.println(c.getAlias() + " has entered the chatroom");
+				parent.handleMessage(c, "has entered the chatroom");
 				MessageListener m = new MessageListener(parent, c, in);
 				m.start();
 				ss.close();

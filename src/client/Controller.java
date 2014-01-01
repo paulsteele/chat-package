@@ -19,34 +19,36 @@ import java.util.Scanner;
  *
  */
 public class Controller {
+	private Model model;
+	private View view;
 	private MessageListener listener;
 	private Socket connection;
 	private int polling;
+	private int port;
+	private PrintWriter out;
 	
-	public Controller(int polling) {
+	public Controller(Model model, View view, String host, int port, int polling) throws UnknownHostException, IOException {
+		this.model = model;
+		this.view = view;
 		this.polling = polling;
+		this.port = port;
+		this.connection = new Socket(host, this.port);
+		this.listener = new MessageListener(this, connection);
+		this.out = new PrintWriter(connection.getOutputStream());
+		//Send server the user alias and flush the data
+		out.println(this.model.getAlias());
+		out.flush();
+		//Start the message listener once everything else is done
+		this.listener.start();
 	}
 	
 	
 	public static void main(String[] args) throws InterruptedException {
-		try {
-			Controller c = new Controller(1000);
-			Socket s = new Socket("localhost",8050);
-			c.listener = new MessageListener(c, s);
-			c.listener.start();
-			PrintWriter out = new PrintWriter(s.getOutputStream());
-			out.println("Bilbo");
-			out.flush();
-			Thread.sleep(1000);
-			out.println("hello");
-			out.flush();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+	}
+	
+	public void sendMessage(String message) {
+		
 	}
 	
 	public void handleMessage(String message) {

@@ -63,8 +63,11 @@ public class Server {
 	}
 	
 	public void handleMessage(Client client, String message) {
+		//Print to console log
+		System.out.println(client.getAlias() + ": " + message);
+		//Send message to all clients
 		for (Client c : getClients()) {
-			c.getPrintWriter().write(c.getAlias() + ": " + message);
+			c.getPrintWriter().println(c.getAlias() + ": " + message);
 			c.getPrintWriter().flush();
 		}
 	}

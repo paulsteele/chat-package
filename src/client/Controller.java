@@ -44,7 +44,7 @@ public class Controller {
 	}
 	
 	public void handleMessage(String message) {
-		
+		System.out.print(message);
 	}
 }
 

@@ -115,6 +115,19 @@ public class View {
 		window.setVisible(true);
 	}
 	
+	public String getTextEntry() {
+		return textEntry.getText();
+	}
 	
+	public void setTextEntry(String s) {
+		textEntry.setText(s);
+	}
 	
+	public void appendChatlog(String s) {
+		chatlog.append(s);
+	}
+	
+	public void clearChatlog() {
+		chatlog.setText("");
+	}
 }

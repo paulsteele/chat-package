@@ -20,11 +20,17 @@ import java.util.Scanner;
  */
 public class Controller {
 	private MessageListener listener;
+	private Socket connection;
+	private int polling;
+	
+	public Controller(int polling) {
+		this.polling = polling;
+	}
 	
 	
 	public static void main(String[] args) throws InterruptedException {
 		try {
-			Controller c = new Controller();
+			Controller c = new Controller(1000);
 			Socket s = new Socket("localhost",8050);
 			c.listener = new MessageListener(c, s);
 			c.listener.start();
@@ -46,6 +52,10 @@ public class Controller {
 	public void handleMessage(String message) {
 		System.out.print(message);
 	}
+	
+	public int getPolling() {
+		return polling;
+	}
 }
 
 /**
@@ -54,17 +64,19 @@ public class Controller {
 class MessageListener extends Thread {
 	private Controller parent;
 	private Scanner in;
+	private int polling;
 	
 	public MessageListener(Controller parent, Socket connection) throws IOException {
 		this.parent = parent;
 		this.in = new Scanner (connection.getInputStream());
+		this.polling = parent.getPolling();
 		
 	}
 	
 	public void run() {
 		while(true) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(polling);
 				if (in.hasNext())
 					parent.handleMessage(in.nextLine());
 			} catch (InterruptedException e) {

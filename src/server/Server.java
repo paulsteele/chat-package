@@ -16,17 +16,21 @@ import java.util.Scanner;
  * This file is protected under a Creative Commons Attribution-NonCommercial 3.0 Unported License
  * For further information see paul-steele.com/Pages/license.php
  * 
- * Server for the chat package. Run via command line. Accepts one argument, that being the port to listen on.
- * Example: 'Sever 8050' will start the server application listening on port 8050(which happens to be the default if a port number isn't entered)
+ * Server for the chat package. Run via command line. Accepts two arguments. The first is the port to listen to, the second is how often
+ * in milliseconds that the server checks to see if messages have arrived.
+ * Example: 'Sever 8050 1000' will start the server application listening on port 8050 waiting 1 second to process messages. (Both values are
+ * default if no numbers are supplied
  *
  */
 public class Server {
 	private LinkedList<Client> clients;
 	private int port;
+	private int polling;
 	
-	public Server(int port) {
+	public Server(int port, int polling) {
 		this.port  = port;
 		clients = new LinkedList<Client>();
+		this.polling = polling;
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
@@ -45,9 +49,22 @@ public class Server {
 		else {
 			System.out.println("No port specified, defaulting to port 8050");
 		}
+		//get polling rate from command line otherwise defaults to 1000
+		int polling = 1000;
+		if (args.length > 1) {
+			try {
+				polling = Integer.parseInt(args[1]);
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Invalid polling rate entered, defaulting to 1000ms");
+			}
+		}
+		else {
+			System.out.println("No polling rate entered, defaulting to 1000ms");
+		}
 		
 		//These three lines NEED to happen for processes to occur properly
-		Server serv = new Server(port);
+		Server serv = new Server(port, polling);
 		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
 		connectListen.start();
 	}
@@ -60,6 +77,10 @@ public class Server {
 	
 	public int getPort() {
 		return port;
+	}
+	
+	public int getPolling() {
+		return polling;
 	}
 	
 	public void handleMessage(Client client, String message) {
@@ -112,18 +133,20 @@ class MessageListener extends Thread {
 	private Server parent;
 	private Client client;
 	private Scanner in;
+	private int polling;
 	
 	public MessageListener(Server parent, Client client, Scanner in) {
 		this.parent = parent;
 		this.client = client;
 		this.in = in;
+		this.polling = parent.getPolling();
 		
 	}
 	
 	public void run() {
 		while(true) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(polling);
 				if (in.hasNext())
 					parent.handleMessage(client, in.nextLine());
 			} catch (InterruptedException e) {
@@ -148,7 +171,7 @@ class ConnectionListener extends Thread {
 	}
 	
 	public void run() {
-		System.out.println("Waiting for connections on port : " + parent.getPort());
+		System.out.println("Waiting for connections on port " + parent.getPort() + " with poll rate of " + parent.getPolling() + "ms");
 		try {
 			while (true) {
 				ServerSocket ss = new ServerSocket(port);

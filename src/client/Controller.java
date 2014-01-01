@@ -43,16 +43,24 @@ public class Controller {
 	}
 	
 	
-	public static void main(String[] args) throws InterruptedException {
-		
+	public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
+		Model m = new Model("Phil");
+		Controller c = new Controller(m, null, "localhost", 8050, 1000);
+		Thread.sleep(1000);
+		c.sendMessage("yolo");
+		Thread.sleep(1000);
+		c.sendMessage("polo");
+		Thread.sleep(1000);
+		c.sendMessage("golo");
 	}
 	
 	public void sendMessage(String message) {
-		
+		out.println(message);
+		out.flush();
 	}
 	
 	public void handleMessage(String message) {
-		System.out.print(message);
+		System.out.println(message);
 	}
 	
 	public int getPolling() {

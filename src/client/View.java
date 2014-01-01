@@ -37,6 +37,7 @@ public class View {
 	private JMenuBar menu;
 	//File Menu
 	private JMenu file;
+	private JMenuItem connect;
 	private JMenuItem exit;
 	//About Menu
 	private JMenu about;
@@ -59,6 +60,7 @@ public class View {
 		menu = new JMenuBar();
 		//File
 		file = new JMenu("File");
+		connect = new JMenuItem("Connect");
 		exit = new JMenuItem("Exit");
 		file.add(exit);
 		//About

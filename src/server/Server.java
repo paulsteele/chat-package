@@ -101,7 +101,9 @@ public class Server {
 	}
 	
 	public void end() {
-		//not really implemented
+		for (Client c : clients) {
+			
+		}
 	}
 }
 /**
@@ -112,6 +114,7 @@ class Client {
 	private Socket link; //The socket connection to the client
 	private PrintWriter output; //The PrintWriter for the socket
 	private String alias; //the username of the client connected
+	private MessageListener listener; //the messagelistener for this particular client
 	
 	public Client(Socket s, String alias) throws IOException {
 		link = s;
@@ -134,6 +137,14 @@ class Client {
 	public PrintWriter getPrintWriter() {
 		return output;
 	}
+	
+	public MessageListener getMessageListener() {
+		return listener;
+	}
+	
+	public void setMessageListener(MessageListener listener) {
+		this.listener = listener;
+	}
 }
 
 
@@ -151,6 +162,7 @@ class MessageListener extends Thread {
 		this.setName(client.getAlias() + " listener");
 		this.parent = parent;
 		this.client = client;
+		this.client.setMessageListener(this);
 		this.in = in;
 		this.polling = parent.getPolling();
 		

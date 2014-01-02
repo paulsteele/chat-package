@@ -102,7 +102,7 @@ public class Server {
 	
 	public void end() {
 		for (Client c : clients) {
-			
+			c.getMessageListener().end();
 		}
 	}
 }

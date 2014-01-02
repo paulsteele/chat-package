@@ -193,6 +193,7 @@ class MessageListener extends Thread {
 			
 			catch (NoSuchElementException e) {
 				//Occurs when connection is closed
+				parent.handleMessage(this.client, "has left the chatroom");
 				parent.removeClient(this.client);
 				this.end();
 			}

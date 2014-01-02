@@ -84,6 +84,7 @@ class MessageListener extends Thread {
 	private boolean keepAlive= true;
 	
 	public MessageListener(Controller parent, Socket connection) throws IOException {
+		this.setName("Message Listener");
 		this.parent = parent;
 		this.in = new Scanner (connection.getInputStream());
 		this.polling = parent.getPolling();

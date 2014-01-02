@@ -136,6 +136,7 @@ class MessageListener extends Thread {
 	private int polling;
 	
 	public MessageListener(Server parent, Client client, Scanner in) {
+		this.setName(client.getAlias() + " listener");
 		this.parent = parent;
 		this.client = client;
 		this.in = in;
@@ -166,6 +167,7 @@ class ConnectionListener extends Thread {
 	private int port;
 	
 	public ConnectionListener (Server parent, int port) {
+		this.setName("Connection Listener");
 		this.parent = parent;
 		this.port = port;
 	}

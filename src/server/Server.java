@@ -27,6 +27,7 @@ public class Server {
 	private LinkedList<Client> clients;
 	private int port;
 	private int polling;
+	private ConnectionListener connectListen;
 	
 	public Server(int port, int polling) {
 		this.port  = port;
@@ -66,8 +67,8 @@ public class Server {
 		
 		//These three lines NEED to happen for processes to occur properly
 		Server serv = new Server(port, polling);
-		ConnectionListener connectListen = new ConnectionListener(serv,serv.getPort());
-		connectListen.start();
+		serv.setConnectionListener(new ConnectionListener(serv,serv.getPort()));
+		serv.getConnectionListener().start();
 	}
 	
 	public LinkedList<Client> getClients() {
@@ -100,7 +101,18 @@ public class Server {
 		}
 	}
 	
+	public void setConnectionListener(ConnectionListener cl) {
+		connectListen = cl;
+	}
+	
+	public ConnectionListener getConnectionListener() {
+		return connectListen;
+	}
+	
 	public void end() {
+		//end the connectionListener
+		connectListen.end();
+		//end all MessageListeners
 		for (Client c : clients) {
 			c.getMessageListener().end();
 		}

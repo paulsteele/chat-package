@@ -68,7 +68,8 @@ public class Controller {
 		return polling;
 	}
 	
-	public void end() {
+	public void end() throws IOException {
+		connection.close();
 		out.close();
 		listener.end();
 	}

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -72,6 +73,12 @@ public class Server {
 	public LinkedList<Client> getClients() {
 		synchronized (this) {
 			return clients;
+		}
+	}
+	
+	public void removeClient(Client c) {
+		synchronized (this) {
+			clients.remove(c);
 		}
 	}
 	
@@ -152,11 +159,21 @@ class MessageListener extends Thread {
 	public void run() {
 		while(keepAlive) {
 			try {
-				if (in.hasNext())
+				//System.out.println(in.next());
+				//retrieves message if there is one
+				//if (in.hasNext())
 					parent.handleMessage(client, in.nextLine());
 				Thread.sleep(polling);
-			} catch (InterruptedException e) {
+			} 
+			
+			catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			
+			catch (NoSuchElementException e) {
+				//Occurs when connection is closed
+				parent.removeClient(this.client);
+				this.end();
 			}
 		}
 			
@@ -165,6 +182,7 @@ class MessageListener extends Thread {
 	public void end() {
 		keepAlive = false;
 		in.close();
+		client.getPrintWriter().close();
 	}
 }
 

@@ -18,7 +18,7 @@ import java.util.LinkedList;
 public class Model implements Serializable {
 	private static final long serialVersionUID = -7792303764708273767L;
 	private String alias;
-	private LinkedList<Model> friends;
+	private LinkedList<String> friends;
 	private String lastHost;
 	private int lastPort;
 	
@@ -38,7 +38,7 @@ public class Model implements Serializable {
 		return alias;
 	}
 	
-	public LinkedList<Model> getFriends() {
+	public LinkedList<String> getFriends() {
 		return friends;
 	}
 	

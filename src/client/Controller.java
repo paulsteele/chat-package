@@ -52,6 +52,7 @@ public class Controller {
 		c.sendMessage("polo");
 		Thread.sleep(1000);
 		c.sendMessage("golo");
+		c.end();
 	}
 	
 	public void sendMessage(String message) {
@@ -66,6 +67,11 @@ public class Controller {
 	public int getPolling() {
 		return polling;
 	}
+	
+	public void end() {
+		out.close();
+		listener.end();
+	}
 }
 
 /**
@@ -75,6 +81,7 @@ class MessageListener extends Thread {
 	private Controller parent;
 	private Scanner in;
 	private int polling;
+	private boolean keepAlive= true;
 	
 	public MessageListener(Controller parent, Socket connection) throws IOException {
 		this.parent = parent;
@@ -84,16 +91,20 @@ class MessageListener extends Thread {
 	}
 	
 	public void run() {
-		while(true) {
+		while(keepAlive) {
 			try {
-				Thread.sleep(polling);
 				if (in.hasNext())
 					parent.handleMessage(in.nextLine());
+				Thread.sleep(polling);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
-			
+		}		
+	}
+	
+	public void end() {
+		keepAlive = false;
+		in.close();
 	}
 }
 

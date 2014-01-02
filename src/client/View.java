@@ -29,7 +29,7 @@ import javax.swing.JTextArea;
  */
 public class View {
 	
-	//Variabes needed as refrences to outside classes
+	//Variabes needed as references to outside classes
 	private Model model;
 	private EventListener eventListener;
 	//Components for Main Window
@@ -40,6 +40,7 @@ public class View {
 	private JMenuBar menu;
 	//File Menu
 	private JMenu file;
+	private JMenuItem newUser;
 	private JMenuItem connect;
 	private JMenuItem exit;
 	//About Menu
@@ -64,6 +65,9 @@ public class View {
 		menu = new JMenuBar();
 		//File
 		file = new JMenu("File");
+		newUser = new JMenuItem("New User");
+		newUser.setActionCommand("newuser");
+		newUser.addActionListener(eventListener);
 		connect = new JMenuItem("Connect");
 		connect.setActionCommand("connect");
 		connect.addActionListener(eventListener);
@@ -94,6 +98,8 @@ public class View {
 		textEntryPane.setViewportView(textEntry);
 		//set up send button
 		send = new JButton("Send");
+		send.setActionCommand("send");
+		send.addActionListener(eventListener);
 		
 		//add components to pane setting up GridBagConsraints as needed
 		paneConstraints.gridx = 0;
@@ -154,11 +160,15 @@ class EventListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		switch (ae.getActionCommand()){
-			case "connect" :
-				break;
-			case "exit" : 
-				break;
-			default: 
+		case "newuser" :
+			break;
+		case "connect" :
+			break;
+		case "exit" : 
+			break;
+		case "send" :
+			break;
+		default: 
 		}
 		
 	}

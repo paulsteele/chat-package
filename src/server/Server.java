@@ -92,6 +92,10 @@ public class Server {
 			c.getPrintWriter().flush();
 		}
 	}
+	
+	public void end() {
+		//not really implemented
+	}
 }
 /**
  * Internal Class for the server to keep track of clients.
@@ -134,6 +138,7 @@ class MessageListener extends Thread {
 	private Client client;
 	private Scanner in;
 	private int polling;
+	private boolean keepAlive = true;
 	
 	public MessageListener(Server parent, Client client, Scanner in) {
 		this.setName(client.getAlias() + " listener");
@@ -145,16 +150,21 @@ class MessageListener extends Thread {
 	}
 	
 	public void run() {
-		while(true) {
+		while(keepAlive) {
 			try {
-				Thread.sleep(polling);
 				if (in.hasNext())
 					parent.handleMessage(client, in.nextLine());
+				Thread.sleep(polling);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 			
+	}
+	
+	public void end() {
+		keepAlive = false;
+		in.close();
 	}
 }
 
@@ -165,6 +175,7 @@ class MessageListener extends Thread {
 class ConnectionListener extends Thread {
 	private Server parent;
 	private int port;
+	private boolean keepAlive = true;
 	
 	public ConnectionListener (Server parent, int port) {
 		this.setName("Connection Listener");
@@ -175,7 +186,7 @@ class ConnectionListener extends Thread {
 	public void run() {
 		System.out.println("Waiting for connections on port " + parent.getPort() + " with poll rate of " + parent.getPolling() + "ms");
 		try {
-			while (true) {
+			while (keepAlive) {
 				ServerSocket ss = new ServerSocket(port);
 				Socket s = ss.accept();
 				Scanner in = new Scanner(s.getInputStream());
@@ -206,5 +217,9 @@ class ConnectionListener extends Thread {
 	
 	public int getPort() {
 		return port;
+	}
+	
+	public void end() {
+		keepAlive = false;
 	}
 }

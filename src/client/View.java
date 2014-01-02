@@ -145,6 +145,22 @@ public class View {
 	public void clearChatlog() {
 		chatlog.setText("");
 	}
+	
+	public void newuser() {
+		
+	}
+	
+	public void connect() {
+		
+	}
+	
+	public void exit() {
+		
+	}
+	
+	public void send() {
+		
+	}
 }
 /**
  * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()
@@ -161,12 +177,16 @@ class EventListener implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		switch (ae.getActionCommand()){
 		case "newuser" :
+			view.newuser();
 			break;
 		case "connect" :
+			view.connect();
 			break;
 		case "exit" : 
+			view.exit();
 			break;
 		case "send" :
+			view.send();
 			break;
 		default: 
 		}

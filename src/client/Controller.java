@@ -45,6 +45,7 @@ public class Controller {
 	
 	public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
 		Controller master = new Controller();
+		master.setView(new View(master));
 	}
 	
 	public void sendMessage(String message) {

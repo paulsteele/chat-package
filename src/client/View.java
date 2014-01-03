@@ -56,7 +56,8 @@ public class View {
 
 	
 	
-	public View() {
+	public View(Controller controller) {
+		this.controller = controller;
 		eventListener = new EventListener(this);
 		//set up Window
 		window = new JFrame("chat-package client");
@@ -67,6 +68,7 @@ public class View {
 		newUser = new JMenuItem("New User");
 		newUser.setActionCommand("newuser");
 		newUser.addActionListener(eventListener);
+		file.add(newUser);
 		connect = new JMenuItem("Connect");
 		connect.setActionCommand("connect");
 		connect.addActionListener(eventListener);
@@ -151,10 +153,6 @@ public class View {
 	
 	public void clearChatlog() {
 		chatlog.setText("");
-	}
-	
-	public void setController(Controller c) {
-		controller = c;
 	}
 	
 	public Controller getController () {

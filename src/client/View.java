@@ -158,6 +158,10 @@ public class View {
 	public Controller getController () {
 		return controller;
 	}
+	
+	public void end() {
+		window.dispose();
+	}
 }
 /**
  * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()

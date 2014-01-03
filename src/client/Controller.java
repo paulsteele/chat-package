@@ -78,6 +78,13 @@ public class Controller {
 	}
 	
 	public void exit() {
+		view.end();
+		try {
+			end();
+		}
+		catch (NullPointerException e){
+			//Means that the client quit before connection every set up. Suppress error
+		}
 		
 	}
 	
@@ -85,8 +92,13 @@ public class Controller {
 		
 	}
 	
-	public void end() throws IOException {
+	public void end() {
+		try {
 		connection.close();
+		}
+		catch (IOException e) {
+			//Haven't decided what to do here yet
+		}
 		out.close();
 		listener.end();
 	}

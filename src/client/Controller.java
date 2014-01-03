@@ -44,15 +44,6 @@ public class Controller {
 	
 	
 	public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
-		Model m = new Model("Phil");
-		Controller c = new Controller(m, null, "localhost", 8050, 1000);
-		Thread.sleep(1000);
-		c.sendMessage("yolo");
-		Thread.sleep(1000);
-		c.sendMessage("polo");
-		Thread.sleep(1000);
-		c.sendMessage("golo");
-		c.end();
 	}
 	
 	public void sendMessage(String message) {
@@ -66,6 +57,22 @@ public class Controller {
 	
 	public int getPolling() {
 		return polling;
+	}
+	
+	public void newuser() {
+		
+	}
+	
+	public void connect() {
+		
+	}
+	
+	public void exit() {
+		
+	}
+	
+	public void send() {
+		
 	}
 	
 	public void end() throws IOException {

@@ -31,6 +31,7 @@ public class View {
 	
 	//Variabes needed as references to outside classes
 	private Model model;
+	private Controller controller;
 	private EventListener eventListener;
 	//Components for Main Window
 	private JFrame window; 
@@ -52,12 +53,10 @@ public class View {
 	//Components for Text viewing
 	private JScrollPane chatlogPane;
 	private JTextArea chatlog;
-	
 
 	
 	
-	public View(Model model) {
-		this.model = model;
+	public View() {
 		eventListener = new EventListener(this);
 		//set up Window
 		window = new JFrame("chat-package client");
@@ -130,6 +129,14 @@ public class View {
 		window.setVisible(true);
 	}
 	
+	public Model getModel() {
+		return model;
+	}
+	
+	public void setModel(Model model) {
+		this.model = model;
+	}
+	
 	public String getTextEntry() {
 		return textEntry.getText();
 	}
@@ -146,20 +153,12 @@ public class View {
 		chatlog.setText("");
 	}
 	
-	public void newuser() {
-		
+	public void setController(Controller c) {
+		controller = c;
 	}
 	
-	public void connect() {
-		
-	}
-	
-	public void exit() {
-		
-	}
-	
-	public void send() {
-		
+	public Controller getController () {
+		return controller;
 	}
 }
 /**
@@ -177,16 +176,16 @@ class EventListener implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		switch (ae.getActionCommand()){
 		case "newuser" :
-			view.newuser();
+			view.getController().newuser();
 			break;
 		case "connect" :
-			view.connect();
+			view.getController().connect();
 			break;
 		case "exit" : 
-			view.exit();
+			view.getController().exit();
 			break;
 		case "send" :
-			view.send();
+			view.getController().send();
 			break;
 		default: 
 		}

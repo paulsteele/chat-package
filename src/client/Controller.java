@@ -27,10 +27,6 @@ public class Controller {
 	private int port;
 	private PrintWriter out;
 	
-	public Controller(Model model, View view, String host, int port, int polling) {
-		
-	}
-	
 	//Actually starts the TCP connection
 	public void begin(Model model, View view, String host, int port, int polling) throws UnknownHostException, IOException {
 		this.model = model;
@@ -48,6 +44,7 @@ public class Controller {
 	}
 	
 	public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
+		Controller master = new Controller();
 	}
 	
 	public void sendMessage(String message) {
@@ -61,6 +58,14 @@ public class Controller {
 	
 	public int getPolling() {
 		return polling;
+	}
+	
+	public View getView() {
+		return view;
+	}
+	
+	public void setView(View v) {
+		view = v;
 	}
 	
 	public void newuser() {

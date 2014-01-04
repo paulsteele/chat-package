@@ -68,10 +68,7 @@ public class Controller {
 	public void setView(View v) {
 		view = v;
 	}
-	
-	public void newuser() {
-		
-	}
+
 	
 	public void connect() {
 		view.createConnectionWindow();

@@ -45,7 +45,6 @@ public class View {
 	private JMenuBar menu;
 	//File Menu
 	private JMenu file;
-	private JMenuItem newUser;
 	private JMenuItem connect;
 	private JMenuItem exit;
 	//About Menu
@@ -69,10 +68,6 @@ public class View {
 		menu = new JMenuBar();
 		//File
 		file = new JMenu("File");
-		newUser = new JMenuItem("New User");
-		newUser.setActionCommand("newuser");
-		newUser.addActionListener(eventListener);
-		file.add(newUser);
 		connect = new JMenuItem("Connect");
 		connect.setActionCommand("connect");
 		connect.addActionListener(eventListener);
@@ -186,9 +181,6 @@ class EventListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		switch (ae.getActionCommand()){
-		case "newuser" :
-			view.getController().newuser();
-			break;
 		case "connect" :
 			view.getController().connect();
 			break;

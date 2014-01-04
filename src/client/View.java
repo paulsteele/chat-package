@@ -6,14 +6,18 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * 
@@ -162,6 +166,11 @@ public class View {
 	public void end() {
 		window.dispose();
 	}
+	
+	public void createConnectionWindow(){
+		ConnectionWindow connectionwindow = new ConnectionWindow();
+		
+	}
 }
 /**
  * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()
@@ -193,5 +202,73 @@ class EventListener implements ActionListener {
 		}
 		
 	}
+	
+}
+
+/**
+ * Connection window
+ */
+
+class ConnectionWindow {
+	//Main window
+	private JFrame window;
+	private JPanel mainPanel;
+	//username
+	private JPanel usernamePanel;
+	private JLabel usernameLabel;
+	private JTextField username;
+	//hostname
+	private JPanel hostnamePanel;
+	private JLabel hostnameLabel;
+	private JTextField hostname;
+	//port
+	private JPanel portPanel;
+	private JLabel portLabel;
+	private JTextField port;
+	//Buttons
+	private JButton confirm;
+	
+	public ConnectionWindow() {
+		//Button setup
+		confirm = new JButton("Confirm");
+		//username setup
+		usernamePanel = new JPanel();
+		usernameLabel = new JLabel("Username: ");
+		username = new JTextField();
+		usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.X_AXIS));
+		usernamePanel.add(usernameLabel);
+		usernamePanel.add(username);
+		//hostname setup
+		hostnamePanel = new JPanel();
+		hostnameLabel = new JLabel("Hostname: ");
+		hostname = new JTextField();
+		hostnamePanel.setLayout(new BoxLayout(hostnamePanel, BoxLayout.X_AXIS));
+		hostnamePanel.add(hostnameLabel);
+		hostnamePanel.add(hostname);
+		//port setup
+		portPanel = new JPanel(); 
+		portLabel = new JLabel("Port: ");
+		port = new JTextField();
+		portPanel.setLayout(new BoxLayout(portPanel, BoxLayout.X_AXIS));
+		portPanel.add(portLabel);
+		portPanel.add(port);
+		portPanel.add(confirm);
+		//Main panel setup
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.add(usernamePanel);
+		mainPanel.add(hostnamePanel);
+		mainPanel.add(portPanel);
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		window = new JFrame("Connect");
+		window.setMinimumSize(new Dimension(300,130));
+		window.setResizable(false);
+		window.add(mainPanel);
+		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		window.setVisible(true);
+		
+	
+	}
+
 	
 }

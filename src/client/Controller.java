@@ -74,7 +74,7 @@ public class Controller {
 	}
 	
 	public void connect() {
-		
+		view.createConnectionWindow();
 	}
 	
 	public void exit() {

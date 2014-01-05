@@ -85,6 +85,10 @@ public class Controller {
 		
 	}
 	
+	public void connectionEntered() {
+		view.getConnectionWindow().end();
+	}
+	
 	public void send() {
 		
 	}

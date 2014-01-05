@@ -56,6 +56,8 @@ public class View {
 	//Components for Text viewing
 	private JScrollPane chatlogPane;
 	private JTextArea chatlog;
+	//External Windows for obtaining information
+	private ConnectionWindow connectionWindow;
 
 	
 	
@@ -163,8 +165,13 @@ public class View {
 	}
 	
 	public void createConnectionWindow(){
-		ConnectionWindow connectionwindow = new ConnectionWindow();
+		connectionWindow = new ConnectionWindow();
+		connectionWindow.setActionListener(eventListener);
 		
+	}
+	
+	public ConnectionWindow getConnectionWindow() {
+		return connectionWindow;
 	}
 }
 /**
@@ -183,6 +190,9 @@ class EventListener implements ActionListener {
 		switch (ae.getActionCommand()){
 		case "connect" :
 			view.getController().connect();
+			break;
+		case "connectionEntered" :
+			view.getController().connectionEntered();
 			break;
 		case "exit" : 
 			view.getController().exit();
@@ -261,6 +271,26 @@ class ConnectionWindow {
 		
 	
 	}
+	
+	public String getUsername() {
+		return username.getText();
+	}
 
+	public String getHostname() {
+		return hostname.getText();
+	}
+	
+	public String getPort() {
+		return port.getText();
+	}
+	
+	public void setActionListener(ActionListener al){
+		confirm.setActionCommand("connectionEntered");
+		confirm.addActionListener(al);
+	}
+	
+	public void end() {
+		window.dispose();
+	}
 	
 }

@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 /**
  * 
  * @author Paul Steele
@@ -85,7 +87,15 @@ public class Controller {
 	}
 	
 	public void connectionEntered() {
-		view.getConnectionWindow().end();
+		try {
+			String username = view.getConnectionWindow().getUsername();
+			if (username == null || username.equals(""))
+				throw new invalidUsernameException();
+			view.getConnectionWindow().end();
+		}
+		catch (invalidUsernameException e) {
+			JOptionPane.showMessageDialog(null, "Invalid username entered. Try again.", "Username Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void send() {
@@ -137,5 +147,13 @@ class MessageListener extends Thread {
 		keepAlive = false;
 		in.close();
 	}
+}
+
+/**
+ * Exception classes for conditional messages while connecting
+ */
+class invalidUsernameException extends RuntimeException {
+	private static final long serialVersionUID = -1284665088338949067L;
+	
 }
 

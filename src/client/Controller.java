@@ -90,11 +90,35 @@ public class Controller {
 		try {
 			String username = view.getConnectionWindow().getUsername();
 			if (username == null || username.equals(""))
-				throw new invalidUsernameException();
+				throw new InvalidUsernameException();
+			
+			String hostname = view.getConnectionWindow().getHostname();
+			if (hostname == null || hostname.equals(""))
+				throw new InvalidHostnameException();
+			
+			int port;
+			
+			try {
+				port = Integer.parseInt(view.getConnectionWindow().getPort());
+			}
+			catch (NumberFormatException e){
+				throw new InvalidPortException();
+			}
+			
+			if (port < 0 || port > 65535) {
+				throw new InvalidPortException();
+			}
+			
 			view.getConnectionWindow().end();
 		}
-		catch (invalidUsernameException e) {
+		catch (InvalidUsernameException e) {
 			JOptionPane.showMessageDialog(null, "Invalid username entered. Try again.", "Username Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (InvalidHostnameException e) {
+			JOptionPane.showMessageDialog(null, "Invalid hostname entered. Try again.", "Hostname Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (InvalidPortException e) {
+			JOptionPane.showMessageDialog(null, "Invalid port entered. Try again.", "Port Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -152,8 +176,17 @@ class MessageListener extends Thread {
 /**
  * Exception classes for conditional messages while connecting
  */
-class invalidUsernameException extends RuntimeException {
+class InvalidUsernameException extends RuntimeException {
 	private static final long serialVersionUID = -1284665088338949067L;
 	
 }
 
+class InvalidHostnameException extends RuntimeException {
+	private static final long serialVersionUID = 461853824304305724L;
+	
+}
+
+class InvalidPortException extends RuntimeException {
+	private static final long serialVersionUID = -1648488952976590056L;
+	
+}

@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -87,7 +88,11 @@ public class Controller {
 	}
 	
 	public void connectionEntered() {
+		
 		try {
+			
+			//Obtains info from the GUI
+			
 			String username = view.getConnectionWindow().getUsername();
 			if (username == null || username.equals(""))
 				throw new InvalidUsernameException();
@@ -105,12 +110,17 @@ public class Controller {
 				throw new InvalidPortException();
 			}
 			
-			if (port < 0 || port > 65535) {
+			if (port < 1 || port > 65535) {
 				throw new InvalidPortException();
 			}
 			
-			view.getConnectionWindow().end();
+			//DO THE CONNECTING
+			Model m = new Model(username);
+			this.begin(m, hostname, port, 1000);
+			getView().getConnectionWindow().end();
+			
 		}
+		//Gui error catchers
 		catch (InvalidUsernameException e) {
 			JOptionPane.showMessageDialog(null, "Invalid username entered. Try again.", "Username Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -120,6 +130,20 @@ public class Controller {
 		catch (InvalidPortException e) {
 			JOptionPane.showMessageDialog(null, "Invalid port entered. Try again.", "Port Error", JOptionPane.ERROR_MESSAGE);
 		}
+		//Connecting Error catches
+		catch (UnknownHostException e){
+			JOptionPane.showMessageDialog(null, "Could not connect to host. Make sure the hostname is entered correctly.",
+					"Error connecting to host", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (ConnectException e) {
+			JOptionPane.showMessageDialog(null, "Connection refused by host. Make sure a server is running on specified machine", 
+					"Connection Refused", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public void send() {

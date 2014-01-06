@@ -173,6 +173,10 @@ public class View {
 	public ConnectionWindow getConnectionWindow() {
 		return connectionWindow;
 	}
+	
+	public boolean checkAlive() {
+		return window.isShowing();
+	}
 }
 /**
  * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()

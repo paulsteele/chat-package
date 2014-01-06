@@ -56,7 +56,7 @@ public class Controller {
 	}
 	
 	public void handleMessage(String message) {
-		System.out.println(message);
+		getView().appendChatlog(message);
 	}
 	
 	public int getPolling() {
@@ -182,6 +182,7 @@ class MessageListener extends Thread {
 	public void run() {
 		while(keepAlive) {
 			try {
+				
 				if (in.hasNext())
 					parent.handleMessage(in.nextLine());
 				Thread.sleep(polling);

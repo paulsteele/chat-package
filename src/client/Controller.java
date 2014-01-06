@@ -28,9 +28,8 @@ public class Controller {
 	private PrintWriter out;
 	
 	//Actually starts the TCP connection
-	public void begin(Model model, View view, String host, int port, int polling) throws UnknownHostException, IOException {
+	public void begin(Model model, String host, int port, int polling) throws UnknownHostException, IOException {
 		this.model = model;
-		this.view = view;
 		this.polling = polling;
 		this.port = port;
 		this.connection = new Socket(host, this.port);

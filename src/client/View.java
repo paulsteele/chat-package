@@ -5,9 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -40,6 +41,7 @@ public class View {
 	private Controller controller;
 	private EventListener eventListener;
 	private WindowEventListener windowListener;
+	private KeyEventListener keyListener;
 	//Components for Main Window
 	private JFrame window; 
 	private JPanel pane;
@@ -68,6 +70,7 @@ public class View {
 		this.controller = controller;
 		eventListener = new EventListener(this);
 		windowListener = new WindowEventListener(this);
+		keyListener = new KeyEventListener(this);
 		//set up Window
 		window = new JFrame("chat-package client");
 		//set up Menubar
@@ -100,6 +103,7 @@ public class View {
 		chatlogPane.setViewportView(chatlog);
 		//set up textEntry
 		textEntry = new JTextArea();
+		textEntry.addKeyListener(keyListener);
 		textEntryPane = new JScrollPane();
 		textEntryPane.setViewportView(textEntry);
 		//set up send button
@@ -137,6 +141,10 @@ public class View {
 		window.setVisible(true);
 	}
 	
+	public KeyEventListener getKeyListener() {
+		return keyListener;
+	}
+	
 	public Model getModel() {
 		return model;
 	}
@@ -170,7 +178,7 @@ public class View {
 	}
 	
 	public void createConnectionWindow(){
-		connectionWindow = new ConnectionWindow();
+		connectionWindow = new ConnectionWindow(this);
 		connectionWindow.setActionListener(eventListener);
 		
 	}
@@ -230,6 +238,22 @@ class WindowEventListener extends WindowAdapter {
 }
 
 /**
+ * KeyListener for GUI elements. Used for main window and ConnnecitonWindow
+ * 
+ */
+class KeyEventListener extends KeyAdapter {
+	private View view;
+	
+	KeyEventListener(View view) {
+		this.view = view;
+	}
+	
+	public void keyPressed (KeyEvent e) {
+		
+	}
+}
+
+/**
  * Connection window
  */
 
@@ -252,13 +276,14 @@ class ConnectionWindow {
 	//Buttons
 	private JButton confirm;
 	
-	public ConnectionWindow() {
+	public ConnectionWindow(View view) {
 		//Button setup
 		confirm = new JButton("Confirm");
 		//username setup
 		usernamePanel = new JPanel();
 		usernameLabel = new JLabel("Username: ");
 		username = new JTextField();
+		username.addKeyListener(view.getKeyListener());
 		usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.X_AXIS));
 		usernamePanel.add(usernameLabel);
 		usernamePanel.add(username);
@@ -266,6 +291,7 @@ class ConnectionWindow {
 		hostnamePanel = new JPanel();
 		hostnameLabel = new JLabel("Hostname: ");
 		hostname = new JTextField();
+		hostname.addKeyListener(view.getKeyListener());
 		hostnamePanel.setLayout(new BoxLayout(hostnamePanel, BoxLayout.X_AXIS));
 		hostnamePanel.add(hostnameLabel);
 		hostnamePanel.add(hostname);
@@ -273,6 +299,7 @@ class ConnectionWindow {
 		portPanel = new JPanel(); 
 		portLabel = new JLabel("Port: ");
 		port = new JTextField();
+		port.addKeyListener(view.getKeyListener());
 		portPanel.setLayout(new BoxLayout(portPanel, BoxLayout.X_AXIS));
 		portPanel.add(portLabel);
 		portPanel.add(port);

@@ -182,7 +182,6 @@ class MessageListener extends Thread {
 	public void run() {
 		while(keepAlive) {
 			try {
-				
 				if (in.hasNext())
 					parent.handleMessage(in.nextLine());
 				Thread.sleep(polling);

@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -37,6 +39,7 @@ public class View {
 	private Model model;
 	private Controller controller;
 	private EventListener eventListener;
+	private WindowEventListener windowListener;
 	//Components for Main Window
 	private JFrame window; 
 	private JPanel pane;
@@ -64,6 +67,7 @@ public class View {
 	public View(Controller controller) {
 		this.controller = controller;
 		eventListener = new EventListener(this);
+		windowListener = new WindowEventListener(this);
 		//set up Window
 		window = new JFrame("chat-package client");
 		//set up Menubar
@@ -127,6 +131,7 @@ public class View {
 		window.setJMenuBar(menu);
 		//add pane to window and display window
 		window.add(pane);
+	    window.addWindowListener(windowListener);
 		window.setMinimumSize(new Dimension(500, 500));
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setVisible(true);
@@ -173,16 +178,13 @@ public class View {
 	public ConnectionWindow getConnectionWindow() {
 		return connectionWindow;
 	}
-	
-	public boolean checkAlive() {
-		return window.isShowing();
-	}
+
 }
 /**
  * Universal EventListener for GUI events, uses switch and compares to ActionEvent.getActionCommand()
  *
  */
-class EventListener implements ActionListener {
+class EventListener implements ActionListener{
 	private View view;
 	
 	EventListener(View view){
@@ -209,6 +211,22 @@ class EventListener implements ActionListener {
 		
 	}
 	
+}
+
+/**
+ * Window Listener for GUI elements. Used for main window
+ *
+ */
+class WindowEventListener extends WindowAdapter {
+	private View view;
+	
+	WindowEventListener(View view) {
+		this.view = view;
+	}
+	
+	public void windowClosing(WindowEvent e) {
+		view.getController().exit();
+	}
 }
 
 /**

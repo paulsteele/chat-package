@@ -147,7 +147,8 @@ public class Controller {
 	}
 	
 	public void send() {
-		
+		sendMessage(view.getTextEntry());
+		view.setTextEntry("");
 	}
 	
 	public void end() {

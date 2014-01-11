@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -186,6 +187,10 @@ public class View {
 	public ConnectionWindow getConnectionWindow() {
 		return connectionWindow;
 	}
+	
+	public Component getMainFrame() {
+		return pane;
+	}
 
 }
 /**
@@ -249,7 +254,20 @@ class KeyEventListener extends KeyAdapter {
 	}
 	
 	public void keyPressed (KeyEvent e) {
-		
+		Component trigger = (Component) e.getSource();
+		//Makes sure enter was pressed
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			//the third parent of the trigger will be view.getMainFrame if fired from chat window
+			if (trigger.getParent().getParent().getParent() == view.getMainFrame()){
+				//enter pressed for chat
+				view.getController().send();
+			}
+			//the second parent of the trigger will be view.getConnectionWindow.getMainFrame if fired from connection window
+			if (trigger.getParent().getParent() == view.getConnectionWindow().getMainFrame()){
+				//enter pressed for connection window
+				view.getController().connectionEntered();
+			}
+		}
 	}
 }
 
@@ -340,6 +358,10 @@ class ConnectionWindow {
 	
 	public void end() {
 		window.dispose();
+	}
+	
+	public Component getMainFrame() {
+		return mainPanel;
 	}
 	
 }

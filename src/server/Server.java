@@ -96,7 +96,7 @@ public class Server {
 		System.out.println(client.getAlias() + ": " + message);
 		//Send message to all clients
 		for (Client c : getClients()) {
-			c.getPrintWriter().println(c.getAlias() + ": " + message);
+			c.getPrintWriter().println(client.getAlias() + ": " + message);
 			c.getPrintWriter().flush();
 		}
 	}

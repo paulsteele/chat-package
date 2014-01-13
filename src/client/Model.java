@@ -1,5 +1,11 @@
 package client;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -27,11 +33,45 @@ public class Model implements Serializable {
 	}
 	
 	public void save() {
+		try {
+			FileOutputStream fileStream = new FileOutputStream ("User.dat");
+			ObjectOutputStream objectStream = new ObjectOutputStream (fileStream);
+			objectStream.writeObject(this);
+			objectStream.close();
+			fileStream.close();
 		
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void load() {
-		
+		try {
+			FileInputStream fileStream = new FileInputStream ("User.dat");
+			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+			Model m = (Model) objectStream.readObject();
+			alias = m.getAlias();
+			setLastHost(m.getLastHost());
+			setLastPort(m.getLastPort());
+			objectStream.close();
+			fileStream.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public String getAlias() {

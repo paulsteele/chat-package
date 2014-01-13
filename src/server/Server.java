@@ -101,6 +101,16 @@ public class Server {
 		}
 	}
 	
+	public void handleLeave(Client client) {
+		//Print to console log
+		System.out.println(client.getAlias() + " has left the chatroom");
+		//Send message to all clients
+		for (Client c : getClients()) {
+			c.getPrintWriter().println(client.getAlias() + " has left the chatroom");
+			c.getPrintWriter().flush();
+		}
+	}
+	
 	public void setConnectionListener(ConnectionListener cl) {
 		connectListen = cl;
 	}
@@ -193,7 +203,7 @@ class MessageListener extends Thread {
 			
 			catch (NoSuchElementException e) {
 				//Occurs when connection is closed
-				parent.handleMessage(this.client, "has left the chatroom");
+				parent.handleLeave(this.client);
 				parent.removeClient(this.client);
 				this.end();
 			}

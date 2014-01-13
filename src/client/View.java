@@ -163,7 +163,7 @@ public class View {
 	}
 	
 	public void appendChatlog(String s) {
-		chatlog.append(s);
+		chatlog.append(s + "\n");
 	}
 	
 	public void clearChatlog() {

@@ -49,4 +49,12 @@ public class Model implements Serializable {
 	public int getLastPort() {
 		return lastPort;
 	}
+	
+	public void setLastHost(String host) {
+		lastHost = host;
+	}
+	
+	public void setLastPort(int port) {
+		lastPort = port;
+	}
 }

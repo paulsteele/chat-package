@@ -116,7 +116,11 @@ public class Controller {
 			
 			//DO THE CONNECTING
 			Model m = new Model(username);
+			//Set up last host and port info for the model
+			m.setLastHost(hostname);
+			m.setLastPort(port);
 			this.begin(m, hostname, port, 1000);
+			//Destroy the connection window
 			getView().getConnectionWindow().end();
 			
 		}

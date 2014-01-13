@@ -57,7 +57,7 @@ public class View {
 	private JMenu about;
 	//Components for Text entry
 	private JScrollPane textEntryPane;
-	private JTextArea textEntry;
+	private JTextField textEntry;
 	private JButton send;
 	//Components for Text viewing
 	private JScrollPane chatlogPane;
@@ -103,7 +103,7 @@ public class View {
 		chatlogPane = new JScrollPane();
 		chatlogPane.setViewportView(chatlog);
 		//set up textEntry
-		textEntry = new JTextArea();
+		textEntry = new JTextField();
 		textEntry.addKeyListener(keyListener);
 		textEntryPane = new JScrollPane();
 		textEntryPane.setViewportView(textEntry);

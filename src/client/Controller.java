@@ -74,6 +74,7 @@ public class Controller {
 	
 	public void connect() {
 		view.createConnectionWindow();
+		enterDefaults();
 	}
 	
 	public void exit() {
@@ -154,6 +155,12 @@ public class Controller {
 	public void send() {
 		sendMessage(view.getTextEntry());
 		view.setTextEntry("");
+	}
+	
+	public void enterDefaults() {
+		view.getConnectionWindow().setHostname("localhost");
+		view.getConnectionWindow().setUsername("person");
+		view.getConnectionWindow().setPort("8050");
 	}
 	
 	public void end() {

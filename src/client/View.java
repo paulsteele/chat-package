@@ -343,12 +343,24 @@ class ConnectionWindow {
 		return username.getText();
 	}
 
+	public void setUsername(String s) {
+		username.setText(s);
+	}
+	
 	public String getHostname() {
 		return hostname.getText();
 	}
 	
+	public void setHostname(String s) {
+		hostname.setText(s);
+	}
+	
 	public String getPort() {
 		return port.getText();
+	}
+	
+	public void setPort(String s) {
+		port.setText(s);
 	}
 	
 	public void setActionListener(ActionListener al){

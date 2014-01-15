@@ -121,6 +121,9 @@ public class Controller {
 			m.setLastHost(hostname);
 			m.setLastPort(port);
 			
+			//Save these credentials for next use
+			m.save();
+			
 			this.begin(m, hostname, port, 1000);
 			//Destroy the connection window
 			getView().getConnectionWindow().end();

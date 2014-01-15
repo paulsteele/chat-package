@@ -1,5 +1,6 @@
 package client;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ConnectException;
@@ -8,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
+
 
 /**
  * 
@@ -161,9 +163,23 @@ public class Controller {
 	}
 	
 	public void enterDefaults() {
-		view.getConnectionWindow().setHostname("localhost");
-		view.getConnectionWindow().setUsername("person");
-		view.getConnectionWindow().setPort("8050");
+		String host = "";
+		String user = "";
+		String port = "";
+		//Check to see if a previous connection has been saved in User.dat
+		File test = new File("User.dat");
+		if (test.exists()) {
+			//load up the file
+			Model m = new Model("ERROR");
+			m.load();
+			host = m.getLastHost();
+			user = m.getAlias();
+			port = "" + m.getLastPort();
+		}
+		
+		view.getConnectionWindow().setHostname(host);
+		view.getConnectionWindow().setUsername(user);
+		view.getConnectionWindow().setPort(port);
 	}
 	
 	public void end() {

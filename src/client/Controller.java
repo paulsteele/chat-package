@@ -171,10 +171,11 @@ public class Controller {
 		if (test.exists()) {
 			//load up the file
 			Model m = new Model("ERROR");
-			m.load();
-			host = m.getLastHost();
-			user = m.getAlias();
-			port = "" + m.getLastPort();
+			if (m.load() == 1) {
+				host = m.getLastHost();
+				user = m.getAlias();
+				port = "" + m.getLastPort();
+			}
 		}
 		
 		view.getConnectionWindow().setHostname(host);

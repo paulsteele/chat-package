@@ -32,25 +32,24 @@ public class Model implements Serializable {
 		this.alias = alias;
 	}
 	
-	public void save() {
+	public int save() {
 		try {
 			FileOutputStream fileStream = new FileOutputStream ("User.dat");
 			ObjectOutputStream objectStream = new ObjectOutputStream (fileStream);
 			objectStream.writeObject(this);
 			objectStream.close();
 			fileStream.close();
+			return 1;
 		
 		
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 0;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 0;
 		}
 	}
 	
-	public void load() {
+	public int load() {
 		try {
 			FileInputStream fileStream = new FileInputStream ("User.dat");
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
@@ -60,17 +59,14 @@ public class Model implements Serializable {
 			setLastPort(m.getLastPort());
 			objectStream.close();
 			fileStream.close();
-			
+			return 1;
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 0;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 0;
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 0;
 		}
 	}
 	

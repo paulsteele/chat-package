@@ -91,22 +91,12 @@ public class Server {
 		return polling;
 	}
 	
-	public void handleMessage(Client client, String message) {
+	public void handleMessage(Client client, String message, boolean colon) {
 		//Print to console log
-		System.out.println(client.getAlias() + ": " + message);
+		System.out.println(client.getAlias() + (colon ?": ":" ") + message);
 		//Send message to all clients
 		for (Client c : getClients()) {
-			c.getPrintWriter().println(client.getAlias() + ": " + message);
-			c.getPrintWriter().flush();
-		}
-	}
-	
-	public void handleLeave(Client client) {
-		//Print to console log
-		System.out.println(client.getAlias() + " has left the chatroom");
-		//Send message to all clients
-		for (Client c : getClients()) {
-			c.getPrintWriter().println(client.getAlias() + " has left the chatroom");
+			c.getPrintWriter().println(client.getAlias() + (colon ?": ":" ") + message);
 			c.getPrintWriter().flush();
 		}
 	}
@@ -193,7 +183,7 @@ class MessageListener extends Thread {
 	public void run() {
 		while(keepAlive) {
 			try {
-				parent.handleMessage(client, in.nextLine());
+				parent.handleMessage(client, in.nextLine(), true);
 				Thread.sleep(polling);
 			} 
 			
@@ -203,7 +193,7 @@ class MessageListener extends Thread {
 			
 			catch (NoSuchElementException e) {
 				//Occurs when connection is closed
-				parent.handleLeave(this.client);
+				parent.handleMessage(this.client, "has left the chatroom.", false);
 				parent.removeClient(this.client);
 				this.end();
 			}
@@ -246,7 +236,7 @@ class ConnectionListener extends Thread {
 				synchronized (parent) {
 					parent.getClients().add(c);
 				}
-				parent.handleMessage(c, "has entered the chatroom");
+				parent.handleMessage(c, "has entered the chatroom", false);
 				MessageListener m = new MessageListener(parent, c, in);
 				m.start();
 				ss.close();
@@ -254,10 +244,14 @@ class ConnectionListener extends Thread {
 			
 		}
 		catch (IOException e){
-			e.printStackTrace();
+			//retry
+			System.out.println("The Server has encountered an error. Retrying...");
+			run();
 		} 
 		catch (InterruptedException e) {
-			e.printStackTrace();
+			//retry
+			System.out.println("The Server has encountered an error. Retrying...");
+			run();
 		} 
 	}
 	
